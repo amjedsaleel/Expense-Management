@@ -1,6 +1,7 @@
 const usernameField = document.getElementById('usernameField');
 const emailField = document.getElementById('emailField');
-const passwordField = document.getElementById('passwordField')
+const passwordField = document.getElementById('passwordField');
+const invalidPassword = document.getElementById('password-invalid')
 const feedBackFiled = document.querySelector('.invalid-feedback');
 const usernameValidFeedBAck = document.querySelector('.username-valid-feedback');
 const emailFeedBackArea = document.querySelector('.emailFeedBackArea');
@@ -8,18 +9,16 @@ const emailValidFeedBack = document.querySelector('.mail-valid-feedback');
 const showPasswordToggle = document.getElementById('show-password-toggle')
 
 const handleToggleInput = (e) => {
-  if (showPasswordToggle.textContent === "SHOW") {
-    showPasswordToggle.textContent = "HIDE";    
-    passwordField.setAttribute("type", "text");
-  } else {
-    showPasswordToggle.textContent = "SHOW";
-    passwordField.setAttribute("type", "password");
-  }
+    if (showPasswordToggle.textContent === "SHOW") {
+        showPasswordToggle.textContent = "HIDE";
+        passwordField.setAttribute("type", "text");
+    } else {
+        showPasswordToggle.textContent = "SHOW";
+        passwordField.setAttribute("type", "password");
+    }
 };
 
 showPasswordToggle.addEventListener('click', handleToggleInput)
-
-
 
 
 usernameField.addEventListener('keyup', (e) => {
@@ -84,5 +83,22 @@ emailField.addEventListener('keyup', (e) => {
     }
 })
 
+// function for validation password length
+passwordField.addEventListener('keyup', (e) => {
+    const password = e.target.value;
 
+    passwordField.classList.remove("is-valid")
+    passwordField.classList.remove("is-invalid")
+
+    invalidPassword.innerText = '';
+    invalidPassword.style.display = 'none';
+
+    if (password.length >= 6) {
+        passwordField.classList.add("is-valid")
+    } else {
+        passwordField.classList.add("is-invalid")
+        invalidPassword.style.display = 'block';
+        invalidPassword.innerText = 'Password must be 6 or more characters'
+    }
+})
 

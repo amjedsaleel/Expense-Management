@@ -1,6 +1,9 @@
 # Standard library
 import json
 
+# third-party
+from validate_email import validate_email
+
 # Django
 from django.shortcuts import render
 from django.views import View
@@ -21,6 +24,19 @@ class UsernameValidationView(View):
         if User.objects.filter(username=username).exists():
             return JsonResponse({'username_error': 'sorry username in use, chose another one'}, status=409)
         return JsonResponse({'username_valid': True})
+
+
+class EmailValidationView(View):
+    def post(self, request):
+        data = json.loads(request.body)
+        email = data['email']
+
+        if not validate_email(email):
+            return JsonResponse({'email_error': 'Invalid mail'}, status=400)
+
+        if User.objects.filter(email=email).exists():
+            return JsonResponse({'email_error': 'Sorry mail in use, chose another one'}, status=409)
+        return JsonResponse({'email_valid': True})
 
 
 class RegistrationView(View):

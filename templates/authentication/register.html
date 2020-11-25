@@ -12,9 +12,10 @@
                     <div class="card-title py-3">
                         <h4>Register for a free account</h4>
                     </div>
-                    <form action="#" method="post">
-                        {% csrf_token %}
 
+                    <form action="{% url 'auth:register' %}" method="post">
+                        {% csrf_token %}
+                        {% include 'partilas/messages.html' %}
                         <div class="form-group">
                             <input
                                     type="text"
@@ -50,7 +51,6 @@
                                     class="form-control"
                                     id="passwordField"
                                     autocomplete="off"
-    
                             />
                             <small class="float-right py-3" id="show-password-toggle">SHOW</small>
                         </div>

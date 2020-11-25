@@ -12,3 +12,13 @@
         font-size: 3.5rem;
     }
 }
+
+
+#show-password-toggle {
+    cursor: pointer;
+    transition: all;
+}
+
+#show-password-toggle:hover {
+    transform: scale(1.2);
+}

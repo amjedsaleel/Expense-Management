@@ -9,7 +9,7 @@ const showPasswordToggle = document.getElementById('show-password-toggle')
 
 const handleToggleInput = (e) => {
   if (showPasswordToggle.textContent === "SHOW") {
-    showPasswordToggle.textContent = "HIDE";
+    showPasswordToggle.textContent = "HIDE";    
     passwordField.setAttribute("type", "text");
   } else {
     showPasswordToggle.textContent = "SHOW";

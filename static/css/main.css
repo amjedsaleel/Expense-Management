@@ -22,3 +22,9 @@
 #show-password-toggle:hover {
     transform: scale(1.2);
 }
+
+
+#messages {
+    transform: translateX(-10px);
+    transition: visibility 0s 250ms, opacity 250ms, transform 250ms;
+}

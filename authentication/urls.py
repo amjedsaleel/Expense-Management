@@ -10,6 +10,8 @@ app_name = 'auth'
 urlpatterns = [
     path('register/', views.RegistrationView.as_view(), name='register'),
     path('login', views.LoginView.as_view(), name='login'),
+    path('logout', views.LogoutView.as_view(), name='logout'),
+
     path('verification/<uidb64>/<token>', views.VerificationView.as_view(), name='verification'),
 
     # API

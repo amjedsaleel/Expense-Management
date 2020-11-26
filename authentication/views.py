@@ -15,6 +15,7 @@ from django.urls import reverse
 from django.utils.encoding import force_bytes, force_text, DjangoUnicodeDecodeError
 from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
 from django.contrib.sites.shortcuts import get_current_site
+from django.contrib.auth import authenticate, login, logout
 
 # Local Django
 from . utils import account_activation_token
@@ -127,3 +128,32 @@ class VerificationView(View):
 class LoginView(View):
     def get(self, request):
         return render(request, 'authentication/login.html')
+
+    def post(self, request):
+        username = request.POST['username']
+        password = request.POST['password']
+
+        if username and password:
+            user = authenticate(username=username, password=password)
+
+            if user:
+                if user.is_active:
+                    login(request, user)
+                    messages.success(request, 'Welcome, ' + user.username + ' your are now logged in')
+                    return redirect('expenses:index')
+
+                messages.error(request, 'Your account is not activate, please check your email.')
+                return render(request, 'authentication/login.html')
+
+            messages.error(request, 'invalid credentials')
+            return render(request, 'authentication/login.html')
+
+        messages.error(request, 'Please fill username and password')
+        return render(request, 'authentication/login.html')
+
+
+class LogoutView(View):
+    def post(self, request):
+        logout(request)
+        messages.success(request, 'You have been logged out')
+        return redirect('auth:login')

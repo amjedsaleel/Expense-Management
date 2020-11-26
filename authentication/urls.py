@@ -9,6 +9,7 @@ app_name = 'auth'
 
 urlpatterns = [
     path('register/', views.RegistrationView.as_view(), name='register'),
+    path('verification/<uidb64>/<token>', views.VerificationView.as_view(), name='verification'),
 
     # API
     path('validate-username', csrf_exempt(views.UsernameValidationView.as_view()),

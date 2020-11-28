@@ -118,7 +118,7 @@ class VerificationView(View):
             user.save()
 
             messages.success(request, 'Account is success fully activated')
-            return redirect('auth:register')
+            return redirect('auth:login')
 
         except Exception as ex:
             pass
@@ -136,20 +136,20 @@ class LoginView(View):
         if username and password:
             user = authenticate(username=username, password=password)
 
-            if user:
+            if user is not None:
                 if user.is_active:
                     login(request, user)
                     messages.success(request, 'Welcome, ' + user.username + ' your are now logged in')
-                    return redirect('expenses:index')
-
-                messages.error(request, 'Your account is not activate, please check your email.')
+                    return redirect('expenses:expenses')
+                else:
+                    messages.error(request, 'Your account is not activate, please check your email.')
+                    return render(request, 'authentication/login.html')
+            else:
+                messages.error(request, 'invalid credentials')
                 return render(request, 'authentication/login.html')
-
-            messages.error(request, 'invalid credentials')
+        else:
+            messages.error(request, 'Please fill username and password')
             return render(request, 'authentication/login.html')
-
-        messages.error(request, 'Please fill username and password')
-        return render(request, 'authentication/login.html')
 
 
 class LogoutView(View):

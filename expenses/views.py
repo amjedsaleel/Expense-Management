@@ -3,6 +3,8 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.views import View
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.utils.decorators import method_decorator
 
 # Local django
 from . models import Expense, Category
@@ -15,6 +17,7 @@ def index(request):
     return render(request, 'expenses/index.html')
 
 
+@method_decorator(login_required(login_url='auth:login'), name='dispatch')
 class AddExpenseView(View):
     template_name = 'expenses/add_expense.html'
     categories = Category.objects.all()

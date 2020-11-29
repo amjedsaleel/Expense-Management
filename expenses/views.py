@@ -14,7 +14,12 @@ from . models import Expense, Category
 
 @login_required(login_url='auth:login')
 def index(request):
-    return render(request, 'expenses/index.html')
+    expenses = Expense.objects.filter(owner=request.user).order_by('-date')
+
+    context = {
+        'expenses': expenses
+    }
+    return render(request, 'expenses/index.html', context)
 
 
 @method_decorator(login_required(login_url='auth:login'), name='dispatch')

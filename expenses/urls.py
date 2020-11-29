@@ -8,5 +8,5 @@ app_name = 'expenses'
 
 urlpatterns = [
     path('', views.index, name='expenses'),
-    path('add-expenses', views.add_expense, name='add-expense')
+    path('add-expenses', views.AddExpenseView.as_view(), name='add-expense')
 ]

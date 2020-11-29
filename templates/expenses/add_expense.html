@@ -13,16 +13,20 @@
 
         <div class="card">
             <div class="card-body">
-                <form action="{% url 'expenses:expenses' %}" method="post">
+                <form action="{% url 'expenses:add-expense' %}" method="POST">
+                    {% csrf_token %}
+                    {% include 'partilas/messages.html' %}
                     <div class="form-group">
                         <label for="">Category</label>
                         <select class="form-control" name="category" id="">
-                            <option value="Petrol" name="category">Petrol</option>
+                            {% for category in categories %}
+                                <option value="{{ category.name }}" name="category">{{ category.name }}</option>
+                            {% endfor %}
                         </select>
                     </div>
                     <div class="form-group">
                         <label for="">Amount</label>
-                        <input type="number" class="form-control" name="amount">
+                        <input type="number" class="form-control" name="amount" value="{{ values.amount }}">
                     </div>
                     <div class="form-group">
                         <label for="">Date of Expense</label>
@@ -31,9 +35,9 @@
 
                     <div class="form-group">
                         <label for="">Description</label>
-                        <input type="text" class="form-control" name="Description">
+                        <input type="text" class="form-control" name="description" value="{{ values.description }}">
                     </div>
-                    <input type="button" class="btn btn-primary" value="Submit">
+                    <input type="submit" class="btn btn-primary" value="Submit">
                 </form>
             </div>
         </div>

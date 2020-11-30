@@ -28,17 +28,23 @@
                                 <th>Category</th>
                                 <th>Description</th>
                                 <th>Date</th>
+                                <th></th>
+
                             </tr>
                             </thead>
                             <tbody>
-                                {% for expense in expenses %}
-                                    <tr>
-                                        <td>{{ expense.amount }}</td>
-                                        <td>{{ expense.category }}</td>
-                                        <td>{{ expense.description }}</td>
-                                        <td>{{ expense.date }}</td>
-                                    </tr>
-                                {% endfor %}
+                            {% for expense in expenses %}
+                                <tr>
+                                    <td>{{ expense.amount }}</td>
+                                    <td>{{ expense.category }}</td>
+                                    <td>{{ expense.description }}</td>
+                                    <td>{{ expense.date }}</td>
+                                    <td><a href="{% url 'expenses:edit-expense' expense.pk %}"
+                                           class="btn btn-sm btn-secondary">Edit</a>
+                                    </td>
+
+                                </tr>
+                            {% endfor %}
                             </tbody>
                         </table>
                     </div>

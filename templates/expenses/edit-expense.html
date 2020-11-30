@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="container-fluid mt-5">
+        <div class="row">
+            <div class="col-md-11">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="{% url 'expenses:expenses' %}">Expenses</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Edit Expenses</li>
+                    </ol>
+                </nav>
+            </div>
+            <div class="col-md-1">
+                <a href="{% url 'expenses:expense-delete' expense.id %}" class="btn btn-danger">Delete</a>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-body">
+                <form action="{% url 'expenses:edit-expense' expense.id %}" method="POST">
+                    {% csrf_token %}
+                    {% include 'partilas/messages.html' %}
+                    <div class="form-group">
+                        <label for="">Category</label>
+                        <select class="form-control" name="category" id="">
+                            <option selected value="{{ values.category }}">{{ values.category }}</option>
+                            {% for category in categories %}
+                                <option value="{{ category.name }}" name="category">{{ category.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="">Amount</label>
+                        <input type="number" class="form-control" name="amount" value="{{ values.amount }}">
+                    </div>
+                    <div class="form-group">
+                        <label for="">Date of Expense</label>
+                        <input type="date" class="form-control" name="date">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="">Description</label>
+                        <input type="text" class="form-control" name="description" value="{{ values.description }}">
+                    </div>
+                    <input type="submit" class="btn btn-primary" value="Save">
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}

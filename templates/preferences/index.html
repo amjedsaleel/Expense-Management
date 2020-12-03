@@ -1,7 +1,35 @@
 {% extends 'base.html' %}
 {% block content %}
-    <h5>Preferred Currency</h5>
-    <hr />
 
+    <div class="container-fluid mt-5">
+        <h4>Preferred Currency</h4>
+        <hr />
+        {% include 'partilas/messages.html' %}
+        <form action="{% url 'user-preferences:currency' %}" method="post">
+            {% csrf_token %}
+            <div class="input-group">
+                <select class="custom-select" name="currency" id="inputGroupSelect04"
+                        aria-label="Example select with button addon">
+
+                    {% if user_preference.currency %}
+                        <option selected name="currency"
+                                value="{{ user_preference.currency }}">{{ user_preference.currency }}</option>
+                    {% else %}
+                        <option selected>Choose...</option>
+                    {% endif %}
+
+                    {% for currency in currencies %}
+                        <option value="{{ currency.name }} - {{ currency.value }}" name="currency">{{ currency.name }}
+                            - {{ currency.value }}</option>
+                    {% endfor %}
+
+                </select>
+                <div class="input-group-append">
+                    <input class="btn btn-outline-secondary" type="submit" value="Save"/>
+                </div>
+            </div>
+        </form>
+        <hr />
+    </div>
 
 {% endblock %}

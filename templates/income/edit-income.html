@@ -3,41 +3,47 @@
 {% block content %}
     <div class="container-fluid mt-5">
         <div class="row">
-            <nav aria-label="breadcrumb">
-                <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="{% url 'income:income' %}">Income</a></li>
-                    <li class="breadcrumb-item active" aria-current="page">Add Income</li>
-                </ol>
-            </nav>
+            <div class="col-md-11">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="{% url 'income:income' %}">Income</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Edit Income</li>
+                    </ol>
+                </nav>
+            </div>
+            <div class="col-md-1">
+{#                <a href="{% url 'expenses:expense-delete' expense.id %}" class="btn btn-danger">Delete</a>#}
+            </div>
         </div>
 
         <div class="card">
             <div class="card-body">
-                <form action="{% url 'income:add-income' %}" method="POST">
+                <form action="{% url 'income:edit-income' income.id %}" method="POST">
                     {% csrf_token %}
                     {% include 'partilas/messages.html' %}
                     <div class="form-group">
-                        <label for="">Category</label>
+                        <label for="">Source</label>
                         <select class="form-control" name="source" id="">
+                            <option selected value="{{ values.source }}">{{ values.source }}</option>
                             {% for i in source %}
                                 <option value="{{ i.name }}" name="source">{{ i.name }}</option>
                             {% endfor %}
                         </select>
                     </div>
                     <div class="form-group">
-                        <label for="">Amount</label>
+                        <label for="">Income</label>
                         <input type="number" class="form-control" name="amount" value="{{ values.amount }}">
                     </div>
                     <div class="form-group">
-                        <label for="">Date of Expense</label>
-                        <input type="date" class="form-control" name="date">
+                        <label for="">Date of Income</label>
+                        <input type="date" class="form-control" name="date" value="{{ values.date|date:'Y-m-d'}}">
                     </div>
 
                     <div class="form-group">
                         <label for="">Description</label>
                         <input type="text" class="form-control" name="description" value="{{ values.description }}">
                     </div>
-                    <input type="submit" class="btn btn-primary" value="Submit">
+                    <input type="submit" class="btn btn-primary" value="Save">
                 </form>
             </div>
         </div>

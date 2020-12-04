@@ -1,0 +1,37 @@
+#header {
+    background: #030045;
+    color: #ffffff;
+}
+
+#branding h1 {
+    color: #ffffff;
+}
+
+div.breadcrumbs {
+    background: #4b2c89;
+    padding: 10px 40px;
+    border: none;
+    font-size: 14px;
+    color: #ffffff;
+    text-align: left;
+}
+
+.login .submit-row {
+    padding: 0 !important;
+}
+
+input[type=submit], input[type=button], .submit-row input {
+    background: #030045;
+    margin-top: 10px;
+    width: 100%;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 4px;
+    color: #fff;
+    cursor: pointer;
+}
+
+.module h2, .module caption, .inline-group h2n {
+    background: #030045;
+
+}

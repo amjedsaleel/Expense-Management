@@ -17,7 +17,7 @@
                     {% csrf_token %}
                     {% include 'partilas/messages.html' %}
                     <div class="form-group">
-                        <label for="">Category</label>
+                        <label for="">Source</label>
                         <select class="form-control" name="source" id="">
                             {% for i in source %}
                                 <option value="{{ i.name }}" name="source">{{ i.name }}</option>

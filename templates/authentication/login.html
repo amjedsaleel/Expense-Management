@@ -40,6 +40,11 @@
                         </div>
                         <input type="submit" value="Login" class="btn btn-block btn-primary submit-btn"/>
                     </form>
+                    <div class="container">
+                        <span class="text-lead lead">Dont have an account:</span> <a href="{% url 'auth:register' %}">Register</a>
+                        <div class="float-right"><span class="text-lead lead">Forgot password?:</span> <a
+                                href="{% url 'auth:request-reset-link' %}">Reset password</a></div>
+                    </div>
                 </div>
             </div>
         </div>

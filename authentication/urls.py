@@ -14,6 +14,8 @@ urlpatterns = [
 
     path('verification/<uidb64>/<token>', views.VerificationView.as_view(), name='verification'),
 
+    path('request-reset-link', views.RequestPasswordResetEmail.as_view(), name='request-reset-link'),
+
     # API
     path('validate-username', csrf_exempt(views.UsernameValidationView.as_view()),
          name='validate-username'),

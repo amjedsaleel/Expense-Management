@@ -157,3 +157,11 @@ class LogoutView(View):
         logout(request)
         messages.success(request, 'You have been logged out')
         return redirect('auth:login')
+
+
+class RequestPasswordResetEmail(View):
+    def get(self, request):
+        return render(request, 'authentication/reset-password.html')
+
+    def post(self, request):
+        return render(request, 'authentication/reset-password.html')

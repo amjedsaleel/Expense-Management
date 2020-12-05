@@ -3,6 +3,9 @@ import json
 import datetime
 import csv
 
+# Third party
+import xlwt
+
 # Django
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
@@ -158,5 +161,36 @@ def export_csv(request):
 
     for expense in expenses:
         writer.writerow([expense.amount, expense.description, expense.category, expense.date])
+
+    return response
+
+
+def export_excel(request):
+    date = str(datetime.datetime.now())
+
+    response = HttpResponse(content_type='application/ms-excel')
+    response['Content-Disposition'] = 'attachment; filename=Expenses' + date + 'xls'
+
+    wb = xlwt.Workbook(encoding='utf-8')
+    ws = wb.add_sheet('Expenses')
+    row_number = 0
+    font_style = xlwt.XFStyle()
+    font_style.font.bold = True
+
+    columns = ['Amount', 'Description', 'Category', 'Date']
+
+    for column_number in range(len(columns)):
+        ws.write(row_number, column_number, columns[column_number], font_style)
+
+    font_style = xlwt.XFStyle()
+
+    rows = Expense.objects.filter(owner=request.user).values_list('amount', 'description', 'category', 'date')
+
+    for row in rows:
+        row_number += 1
+
+        for column_number in range(len(row)):
+            ws.write(row_number, column_number, str(columns[column_number]), font_style)
+    wb.save(response)
 
     return response

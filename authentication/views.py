@@ -16,9 +16,11 @@ from django.utils.encoding import force_bytes, force_text, DjangoUnicodeDecodeEr
 from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
 from django.contrib.sites.shortcuts import get_current_site
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.tokens import PasswordResetTokenGenerator
 
 # Local Django
-from . utils import account_activation_token
+from .utils import account_activation_token
+
 
 # Create your views here.
 
@@ -83,10 +85,10 @@ class RegistrationView(View):
                     'token': account_activation_token.make_token(user)
                 })
 
-                activate_url = 'http://'+domain+link
+                activate_url = 'http://' + domain + link
 
                 email_subject = 'Activate account'
-                email_body = 'Hi '+user.username + 'Please use this link to verify your account\n' + activate_url
+                email_body = 'Hi ' + user.username + 'Please use this link to verify your account\n' + activate_url
                 email = EmailMessage(
                     email_subject,
                     email_body,
@@ -109,7 +111,7 @@ class VerificationView(View):
             user = User.objects.get(pk=user_id)
 
             if not account_activation_token.check_token(user, token):
-                return redirect('auth:login'+'?message='+'User is already activated')
+                return redirect('auth:login' + '?message=' + 'User is already activated')
 
             if user.is_active:
                 messages.success(user, 'Already activated. You can login now.')
@@ -164,4 +166,43 @@ class RequestPasswordResetEmail(View):
         return render(request, 'authentication/reset-password.html')
 
     def post(self, request):
+        email = request.POST['email']
+
+        if not User.objects.filter(email=email).exists():
+            messages.error(request, 'Email is not exist in database. Please enter valid email')
+            return render(request, 'authentication/reset-password.html', context={'filed_values': email})
+
+        user = User.objects.filter(email=email)
+
+        if user.exists():
+            uid64 = urlsafe_base64_encode(force_bytes(user[0].pk))
+            domain = get_current_site(request).domain
+            link = reverse('auth:rest-user-password', kwargs={
+                'uidb64': uid64,
+                'token': PasswordResetTokenGenerator().make_token(user)
+            })
+
+            reset_url = 'http://' + domain + link
+
+            email_subject = 'Reset Password'
+            email_body = 'Hi, Please use this link to reset password\n' + reset_url
+            email = EmailMessage(
+                email_subject,
+                email_body,
+                'noreplay@gmail.com',
+                [email],
+                reply_to=['another@example.com'],
+                headers={'Message-ID': 'foo'},
+            )
+            email.send(fail_silently=False)
+            messages.success(request, 'We send an mail to rest password. Please check your email')
+
         return render(request, 'authentication/reset-password.html')
+
+
+class CompletePasswordRestView(View):
+    def get(self, request, uidb64, token):
+        return render(request, 'authentication/set-new-password.html')
+
+    def post(self, request, uidb64, token):
+        return render(request, 'authentication/set-new-password.html')

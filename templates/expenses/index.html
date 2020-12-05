@@ -20,7 +20,11 @@
 
         <section>
             <div class="row">
-                <div class="col-md-8"></div>
+                <div class="col-md-8 mt-2">
+                    <a href="{% url 'expenses:export_csv' %}" class="btn btn-sm btn-primary">Export CSV</a>
+                    <a href="#" class="btn btn-primary btn-sm ml-4">Export CSV</a>
+                    <a href="#" class="btn btn-sm btn-primary ml-4">Export CSV</a>
+                </div>
                 <div class="col-md-4">
                     <div class="form-group">
                         <input type="text" class="form-control" id="search-field" placeholder="Search">

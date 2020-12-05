@@ -15,6 +15,8 @@ urlpatterns = [
 
     path('stats', views.stats_view, name='stats'),
 
+    path('export-csv/', views.export_csv, name='export_csv'),
+
     # API
     path('search-expense', csrf_exempt(views.expense_search), name='search-expense'),
     path('expense-category-summery', views.expense_category_summary, name='expense-category-summery')

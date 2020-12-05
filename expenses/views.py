@@ -1,6 +1,7 @@
 # Standard library
 import json
 import datetime
+import csv
 
 # Django
 from django.shortcuts import render, redirect
@@ -10,7 +11,7 @@ from django.views import View
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.utils.decorators import method_decorator
 from django.core.paginator import Paginator
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse
 
 # Local django
 import userpreferences
@@ -145,4 +146,17 @@ def stats_view(request):
     return render(request, 'expenses/stats.html')
 
 
+def export_csv(request):
+    expenses = Expense.objects.filter(owner=request.user)
+    date = str(datetime.datetime.now())
 
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename=Expenses' + date + '.csv'
+
+    writer = csv.writer(response)
+    writer.writerow(['Amount', 'Description', 'Category', 'Date'])
+
+    for expense in expenses:
+        writer.writerow([expense.amount, expense.description, expense.category, expense.date])
+
+    return response

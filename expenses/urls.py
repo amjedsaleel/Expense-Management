@@ -17,6 +17,7 @@ urlpatterns = [
 
     path('export-csv/', views.export_csv, name='export_csv'),
     path('export-excel/', views.export_excel, name='export-excel'),
+    path('export-pdf/', views.export_pdf, name='export-pdf'),
 
     # API
     path('search-expense', csrf_exempt(views.expense_search), name='search-expense'),
